@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>An Yên — Studio Yoga cho người mới bắt đầu</title>
+<meta name="description" content="An Yên — studio yoga nhẹ nhàng cho người mới tập và dân văn phòng: Hatha, Vinyasa, Yin và thiền hơi thở. Trang demo, mọi thông tin đều là mẫu.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500&family=Noto+Serif+Display:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F4F1E8; --bg-alt:#EAE5D3; --card:#FDFBF5;
+    --ink:#24382E; --ink-soft:#5F6E63; --accent:#8AA899; --accent-soft:#B7C9B8;
+    --line:#D8D2BE;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Be Vietnam Pro",system-ui,sans-serif;font-size:16px;line-height:1.7}
+  h1,h2,h3{font-family:"Noto Serif Display",Georgia,serif;font-weight:500;letter-spacing:0;margin:0}
+  h1{font-size:clamp(48px,8vw,64px);line-height:1.15}
+  h2{font-size:clamp(30px,4vw,36px);line-height:1.25}
+  h3{font-size:20px;line-height:1.3}
+  p{margin:0 0 1em}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  section.block{padding:96px 0}
+  section.block.alt{background:var(--bg-alt)}
+  /* Vạch thở: dưới mỗi H2, 120px, dày 2px, vòng tròn rỗng 8px ở đầu trái */
+  .breath{display:flex;align-items:center;gap:0;margin:18px 0 28px}
+  .breath .dot{width:8px;height:8px;border:2px solid var(--accent);border-radius:50%;flex:none;transition:background .3s}
+  .breath .line{height:2px;background:var(--accent);width:0;transition:width .8s ease}
+  .breath.on .line{width:120px}
+  .breath.on .dot{background:var(--accent)}
+  .divider{display:flex;justify-content:center;padding:0}
+  .divider span{display:block;width:240px;height:2px;background:var(--accent)}
+  /* Mờ dần nhẹ khi vào khung nhìn */
+  .fade{opacity:0;transition:opacity .5s ease}
+  .fade.in{opacity:1}
+  /* Hero toàn màn hình */
+  .hero{position:relative;min-height:100vh;display:flex;align-items:flex-end;overflow:hidden}
+  .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;aspect-ratio:16/9}
+  .hero::after{content:"";position:absolute;inset:0;background:rgba(244,241,232,.2)}
+  .hero-inner{position:relative;z-index:1;width:100%;padding:64px 24px}
+  .hero-inner .wrap{max-width:1080px}
+  .hero p.lead{font-size:18px;color:var(--ink);max-width:560px}
+  .hero-card{background:rgba(253,251,245,.88);padding:32px;border-radius:16px;max-width:640px}
+  .btn{display:inline-block;text-decoration:none;border-radius:999px;padding:12px 28px;font-weight:500}
+  .btn-primary{background:var(--ink);color:var(--bg)}
+  .btn-primary:hover{background:#1a2b22}
+  .btn-outline{border:1px solid var(--accent);color:var(--ink);background:transparent}
+  /* Khối ảnh lớn */
+  figure{margin:0}
+  figure img{width:100%;display:block;border-radius:12px}
+  .ratio-32{aspect-ratio:3/2;object-fit:cover}
+  .ratio-43{aspect-ratio:4/3;object-fit:cover}
+  .ratio-11{aspect-ratio:1/1;object-fit:cover}
+  figcaption{font-size:13px;color:var(--ink-soft);margin-top:10px}
+  /* Thẻ lớp học: xếp dọc 1 cột theo A1 */
+  .class-list{display:flex;flex-direction:column;gap:48px}
+  .class-card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  .class-card .body{padding:28px}
+  .meta{color:var(--ink-soft);font-size:14px}
+  .price{color:var(--accent);font-weight:500;font-size:18px}
+  .tag{display:inline-block;background:var(--accent-soft);color:var(--ink);font-size:13px;padding:2px 12px;border-radius:999px}
+  /* Bảng lịch */
+  .table-scroll{overflow-x:auto}
+  table{border-collapse:collapse;width:100%;min-width:720px;font-size:14px}
+  th,td{border:1px solid var(--line);padding:10px 12px;text-align:left}
+  th{background:var(--bg-alt);font-weight:500}
+  tbody tr:nth-child(even) td{background:var(--bg-alt)}
+  tbody tr:nth-child(odd) td{background:var(--bg)}
+  /* Bảng giá */
+  .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .plan{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:28px;position:relative}
+  .plan.featured{border:2px solid var(--accent)}
+  .plan .badge{position:absolute;top:-13px;left:24px;background:var(--accent);color:#fff;font-size:13px;padding:2px 12px;border-radius:999px}
+  .plan .amount{font-family:"Noto Serif Display",serif;font-size:30px}
+  /* Giáo viên */
+  .teachers{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .teacher{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  .teacher .body{padding:20px}
+  /* Form */
+  form{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:32px;display:grid;gap:16px;max-width:640px}
+  label{font-weight:500;font-size:15px}
+  input,select{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:#fff;font:inherit;color:var(--ink);margin-top:6px}
+  .notice{display:none;background:var(--accent-soft);border-radius:10px;padding:14px 18px}
+  .notice.show{display:block}
+  footer{background:var(--ink);color:var(--bg);padding:48px 0}
+  footer a{color:var(--accent-soft)}
+  footer p{margin:0 0 .5em}
+  @media (max-width:1024px){ .wrap{max-width:90%} }
+  @media (max-width:640px){
+    .wrap{max-width:92%}
+    section.block{padding:64px 0}
+    .plans,.teachers{grid-template-columns:1fr}
+    .hero img{aspect-ratio:3/2}
+    body{font-size:16px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .breath .line{width:120px}
+    .breath .dot{background:var(--accent)}
+    .fade{opacity:1}
+    *{transition:none!important}
+  }
+</style>
+</head>
+<body>
+
+<!-- 1. Hero toàn màn hình: lớp yoga lúc bình minh -->
+<header class="hero fade">
+  <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=1920&auto=format&fit=crop" alt="Lớp yoga lúc bình minh (ảnh mẫu)" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1920&auto=format&fit=crop'">
+  <div class="hero-inner"><div class="wrap"><div class="hero-card">
+    <h1>An Yên</h1>
+    <p class="lead">Yoga nhẹ nhàng cho người mới bắt đầu — thở chậm, tập chậm, về nhà nhẹ người.</p>
+    <a class="btn btn-primary" href="#dat-lich">Đặt lịch tập thử</a>
+  </div></div></div>
+</header>
+
+<!-- 2. Triết lý & không gian -->
+<section class="block fade"><div class="wrap">
+  <h2>Thở chậm lại, sống chậm lại</h2>
+  <div class="breath"><span class="dot"></span><span class="line"></span></div>
+  <p>An Yên tin rằng yoga không phải cuộc thi dẻo dai. Mỗi buổi tập chỉ cần một tấm thảm, một nhịp thở đều và một không gian yên tĩnh để bạn trở về với chính mình.</p>
+  <figure>
+    <img class="ratio-32" src="https://images.unsplash.com/photo-1599447421416-3414500d18a5?q=80&w=1600&auto=format&fit=crop" alt="Không gian phòng tập An Yên (ảnh mẫu)" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=1600&auto=format&fit=crop'">
+    <figcaption>Không gian phòng tập: nhiều ánh sáng tự nhiên, sàn gỗ, yên tĩnh. Ảnh mẫu minh họa.</figcaption>
+  </figure>
+</div></section>
+
+<div class="divider"><span></span></div>
+
+<!-- 3. Các lớp học -->
+<section class="block alt fade"><div class="wrap">
+  <h2>Các lớp học</h2>
+  <div class="breath"><span class="dot"></span><span class="line"></span></div>
+  <div class="class-list">
+    <article class="class-card"><figure>
+      <img class="ratio-43" src="https://images.unsplash.com/photo-1518310383802-640c2de311b2?q=80&w=1400&auto=format&fit=crop" alt="Lớp Hatha (ảnh mẫu)" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=1400&auto=format&fit=crop'">
+    </figure><div class="body">
+      <h3>Hatha — cho người mới</h3>
+      <p>Tư thế cơ bản, giữ lâu, hướng dẫn từng nhịp thở — lớp khởi đầu lý tưởng nếu bạn chưa từng tập yoga.</p>
+      <p class="meta"><span class="tag">Người mới</span> · 60 phút · Sáng thứ 2, 4, 6</p>
+      <p class="price">150.000đ / buổi <span class="meta">(giá mẫu)</span></p>
+    </div></article>
+    <article class="class-card"><figure>
+      <img class="ratio-43" src="https://images.unsplash.com/photo-1575052814086-f385e2e2ad1b?q=80&w=1400&auto=format&fit=crop" alt="Lớp Vinyasa (ảnh mẫu)" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=1400&auto=format&fit=crop'">
+    </figure><div class="body">
+      <h3>Vinyasa — theo nhịp thở</h3>
+      <p>Chuỗi động tác nối tiếp nhau theo hơi thở, vừa vận động vừa thiền động — hợp với dân văn phòng ngồi nhiều.</p>
+      <p class="meta"><span class="tag">Mọi trình độ</span> · 60 phút · Chiều thứ 3, 5, 7</p>
+      <p class="price">180.000đ / buổi <span class="meta">(giá mẫu)</span></p>
+    </div></article>
+    <article class="class-card"><figure>
+      <img class="ratio-43" src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1400&auto=format&fit=crop" alt="Lớp Yin (ảnh mẫu)" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=1400&auto=format&fit=crop'">
+    </figure><div class="body">
+      <h3>Yin — thư giãn sâu</h3>
+      <p>Giữ tư thế lâu với dụng cụ hỗ trợ, thả lỏng toàn thân — lớp buổi tối giúp ngủ ngon hơn.</p>
+      <p class="meta"><span class="tag">Mọi trình độ</span> · 75 phút · Tối thứ 2, 4, 6</p>
+      <p class="price">180.000đ / buổi <span class="meta">(giá mẫu)</span></p>
+    </div></article>
+    <article class="class-card"><figure>
+      <img class="ratio-43" src="https://images.unsplash.com/photo-1499209974431-9dddcece7f88?q=80&w=1400&auto=format&fit=crop" alt="Lớp thiền hơi thở (ảnh mẫu)" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=1400&auto=format&fit=crop'">
+    </figure><div class="body">
+      <h3>Thiền hơi thở</h3>
+      <p>Ngồi yên, thở đều, không cần dẻo — lớp ngắn 30 phút dành cho người bận rộn muốn tĩnh tâm giữa ngày.</p>
+      <p class="meta"><span class="tag">Người mới</span> · 30 phút · Trưa thứ 3, 5, Chủ nhật</p>
+      <p class="price">100.000đ / buổi <span class="meta">(giá mẫu)</span></p>
+    </div></article>
+  </div>
+</div></section>
+
+<!-- 4. Lịch tuần -->
+<section class="block fade"><div class="wrap">
+  <h2>Lịch lớp trong tuần</h2>
+  <div class="breath"><span class="dot"></span><span class="line"></span></div>
+  <p class="meta">Lịch mẫu — giờ học có thể thay đổi theo tuần.</p>
+  <div class="table-scroll"><table>
+    <thead><tr><th>Giờ</th><th>Thứ 2</th><th>Thứ 3</th><th>Thứ 4</th><th>Thứ 5</th><th>Thứ 6</th><th>Thứ 7</th><th>Chủ nhật</th></tr></thead>
+    <tbody>
+      <tr><td>06:30</td><td>Hatha</td><td>—</td><td>Hatha</td><td>—</td><td>Hatha</td><td>Vinyasa</td><td>Thiền hơi thở</td></tr>
+      <tr><td>12:15</td><td>—</td><td>Thiền hơi thở</td><td>—</td><td>Thiền hơi thở</td><td>—</td><td>—</td><td>Thiền hơi thở</td></tr>
+      <tr><td>17:30</td><td>—</td><td>Vinyasa</td><td>—</td><td>Vinyasa</td><td>—</td><td>Vinyasa</td><td>—</td></tr>
+      <tr><td>19:00</td><td>Yin</td><td>—</td><td>Yin</td><td>—</td><td>Yin</td><td>—</td><td>—</td></tr>
+    </tbody>
+  </table></div>
+</div></section>
+
+<!-- 5. Bảng giá mẫu -->
+<section class="block alt fade"><div class="wrap">
+  <h2>Bảng giá mẫu</h2>
+  <div class="breath"><span class="dot"></span><span class="line"></span></div>
+  <div class="plans">
+    <div class="plan"><h3>Buổi lẻ</h3><p class="amount">150.000đ</p><p class="meta">/ buổi · giá mẫu</p><p>Trải nghiệm một buổi bất kỳ, không ràng buộc.</p></div>
+    <div class="plan featured"><span class="badge">Phổ biến nhất</span><h3>Tháng</h3><p class="amount">1.200.000đ</p><p class="meta">/ tháng · giá mẫu</p><p>Không giới hạn lớp trong tháng, giữ chỗ ưu tiên.</p></div>
+    <div class="plan"><h3>Quý</h3><p class="amount">3.000.000đ</p><p class="meta">/ quý · giá mẫu</p><p>Dành cho người tập đều, tiết kiệm hơn gói tháng.</p></div>
+  </div>
+</div></section>
+
+<!-- 6. Giáo viên mẫu -->
+<section class="block fade"><div class="wrap">
+  <h2>Giáo viên</h2>
+  <div class="breath"><span class="dot"></span><span class="line"></span></div>
+  <p class="meta">Ảnh minh họa mẫu — tên và thông tin giáo viên đều là mẫu.</p>
+  <div class="teachers">
+    <article class="teacher"><figure>
+      <img class="ratio-11" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=800&auto=format&fit=crop" alt="Chân dung giáo viên mẫu" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop'">
+    </figure><div class="body"><h3>Minh An (mẫu)</h3><p class="meta">Dạy Hatha và thiền hơi thở, giọng hướng dẫn chậm rãi, hợp người mới.</p></div></article>
+    <article class="teacher"><figure>
+      <img class="ratio-11" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop" alt="Chân dung giáo viên mẫu" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop'">
+    </figure><div class="body"><h3>Quốc Bình (mẫu)</h3><p class="meta">Dạy Vinyasa, chú trọng hơi thở và căn chỉnh tư thế an toàn.</p></div></article>
+    <article class="teacher"><figure>
+      <img class="ratio-11" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=800&auto=format&fit=crop" alt="Chân dung giáo viên mẫu" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop'">
+    </figure><div class="body"><h3>Thu Hằng (mẫu)</h3><p class="meta">Dạy Yin buổi tối, giúp học viên thả lỏng và ngủ sâu hơn.</p></div></article>
+  </div>
+</div></section>
+
+<!-- 7. Form đặt lịch (chỉ giao diện) -->
+<section class="block alt fade" id="dat-lich"><div class="wrap">
+  <h2>Đặt lịch tập thử</h2>
+  <div class="breath"><span class="dot"></span><span class="line"></span></div>
+  <p>Điền form dưới đây — bản demo chỉ hiển thị thông báo, không gửi thông tin đi đâu.</p>
+  <form id="booking-form">
+    <div><label for="name">Họ tên</label><input id="name" name="name" type="text" placeholder="Ví dụ: Nguyễn An" required></div>
+    <div><label for="phone">Số điện thoại</label><input id="phone" name="phone" type="tel" placeholder="Ví dụ: 09xx xxx xxx" required></div>
+    <div><label for="class">Chọn lớp</label><select id="class" name="class" required>
+      <option value="">— Chọn lớp —</option><option>Hatha — cho người mới</option><option>Vinyasa — theo nhịp thở</option><option>Yin — thư giãn sâu</option><option>Thiền hơi thở</option>
+    </select></div>
+    <div><label for="session">Chọn buổi</label><select id="session" name="session" required>
+      <option value="">— Chọn buổi —</option><option>Sáng 06:30</option><option>Trưa 12:15</option><option>Chiều 17:30</option><option>Tối 19:00</option>
+    </select></div>
+    <div><button class="btn btn-primary" type="submit">Gửi yêu cầu (bản demo)</button></div>
+    <div class="notice" id="notice" role="status">Đã ghi nhận (bản demo) — form này chỉ giao diện, chưa gửi thông tin thật.</div>
+  </form>
+</div></section>
+
+<!-- 8. Chân trang -->
+<footer><div class="wrap">
+  <h2 style="color:var(--bg);font-size:24px">An Yên</h2>
+  <p>Địa chỉ: [CẦN BỔ SUNG]</p>
+  <p>Số điện thoại: [CẦN BỔ SUNG]</p>
+  <p>Giờ mở cửa: [CẦN BỔ SUNG]</p>
+  <p>Liên hệ: <a href="mailto:contact@genalpha.dev">contact@genalpha.dev</a></p>
+  <p style="margin-top:16px;color:var(--accent-soft)">Trang demo — thông tin mẫu. Mọi tên, hình ảnh, lịch học, giá và thông tin liên hệ đều là dữ liệu mẫu.</p>
+</div></footer>
+
+<script>
+  // Vạch thở vẽ dần khi cuộn tới + mờ dần nhẹ khi khối vào khung nhìn.
+  // Tôn trọng prefers-reduced-motion qua CSS (hiện tĩnh, không hiệu ứng).
+  (function () {
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var breaths = document.querySelectorAll('.breath');
+    var fades = document.querySelectorAll('.fade');
+    if (reduced || !('IntersectionObserver' in window)) {
+      breaths.forEach(function (b) { b.classList.add('on'); });
+      fades.forEach(function (f) { f.classList.add('in'); });
+    } else {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('on', 'in'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.15 });
+      breaths.forEach(function (b) { io.observe(b); });
+      fades.forEach(function (f) { io.observe(f); });
+    }
+    // Form CHỈ giao diện: chặn gửi thật, chỉ hiện thông báo demo.
+    document.getElementById('booking-form').addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      document.getElementById('notice').classList.add('show');
+    });
+  })();
+</script>
+</body>
+</html>

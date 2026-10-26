@@ -18,7 +18,7 @@ Mở file `index.html` bằng trình duyệt (nhấp đúp, không cần máy ch
 | --- | --- |
 | `README.md` | Tài liệu giới thiệu này |
 | `LICENSE` | Giấy phép MIT |
-| `index.html` | Trang chính |
+| `index.html` | Trang chính — HTML/CSS/JavaScript thuần, một tệp duy nhất, mở trực tiếp bằng trình duyệt; ảnh mẫu minh họa, form chỉ giao diện |
 
 ## English
 
